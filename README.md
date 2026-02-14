@@ -7,6 +7,6 @@
 
 ## 🔌Shortened Script
 ```lua
-loadstring(game:HttpGet("https://raw.githubusercontent.com/nikoladhima/Fish-Hatchery/main/FishHatchery.luau"))()
+loadstring(game:HttpGet("https://raw.githubusercontent.com/nikoladhima/Fish-Hatchery/main/FishHatchery.lua"))()
 ```
 <br/>
