@@ -658,6 +658,9 @@ MainTab:AddToggle("AutofarmHideWaves", {Title = "Hide Waves", Default = false}):
 end)
 
 MainTab:AddSection("Ability Abuse", "apple")
+MainTab:AddParagraph({
+    Content = "Tidal Waves may not do anything unless you are standing inside of the Reef."
+})
 MainTab:AddToggle("InfiniteTidalWaveToggle", {Title = "Infinite Tidal Wave", Default = false}):OnChanged(function()
     TidalWave.Enabled = Options["InfiniteTidalWaveToggle"].Value
 end)
