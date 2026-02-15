@@ -1,5 +1,5 @@
 > [!IMPORTANT]
-> **Join my [discord server](https://discord.gg/DwRT2nH93D) if you find any bugs or have issues with the scripts,**
+> **Join my [discord server](https://discord.gg/DwRT2nH93D) if you find any bugs or have issues with the script.**
 
 ## ⚙️ Features:
 - **Autofarm**
