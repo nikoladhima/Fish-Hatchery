@@ -3,13 +3,20 @@
 
 ## ⚙️ Features:
 - **Autofarm**
-  - Multi-Mode Selecton (Use Fish, Spawn Tidal Waves)
-  - Customizable Power & Wait Time
-  - Option to Hide Waves
+  - Fully Customizable
+  - **AuraFarm**
+    - Based on Autofarm Power
+    - Customizable Ghosting & Delay Time
+    - Option to Hide Waves
 - **Ability Abuse**
   - Infinite Tidal Wave Spawner
   - Customizable Wait Time
   - Option to Hide Waves
+- **Misc**
+  - CFrame Speed
+  - Remove All Waves
+  - Ear Bleed
+  - Lag Server
 
 ## 🔌Shortened Script
 ```lua
