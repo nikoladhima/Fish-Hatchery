@@ -128,6 +128,21 @@ local TidalWave = {
     WaitTime = 0.5,
 }
 
+local PinAbility = {
+    Enabled = false,
+    WaitTime = 0.5
+}
+
+local HellfireAbility = {
+    Enabled = false,
+    WaitTime = 0.5
+}
+
+local SolarFlareAbility = {
+    Enabled = false,
+    WaitTime = 0.5
+}
+
 local CFrameSpeed = {
     Enabled = false,
     Value = 50
@@ -396,27 +411,35 @@ task.spawn(function()
             break
         end
 
-        if TidalWave.Enabled then
-            local LocalRootCFrame = LocalRoot and LocalRoot.CFrame
-            if LocalRootCFrame then
-                PoseidonWaveEvent:FireServer(LocalRootCFrame)
-                if not TidalWave.HideWaves then
-                    if CanRequire then
-                        VFXController.Play("Wave", nil, {
-                            ["StartCFrame"] = LocalRootCFrame
-                        })
-                    else
-                        VFXTidalWave(LocalRootCFrame)
+        if LocalRoot and Autofarm.AuraFarm then
+            for Index = 1, 360 do
+                if Index % 10 == 0 then
+                    for i = 1, Autofarm.Power do
+                        local FinalCFrame = CFrame.new(LocalRoot.Position) * CFrame.Angles(0, math.rad(Index), 0)
+                        PoseidonWaveEvent:FireServer(FinalCFrame)
+                        if not Autofarm.HideWaves then
+                            if CanRequire then
+                                VFXController.Play("Wave", nil, {
+                                    ["StartCFrame"] = FinalCFrame
+                                })
+                            else
+                                VFXTidalWave(FinalCFrame)
+                            end
+                        end
+                        if not Autofarm.AuraFarm then
+                            break
+                        end
+                        if i == (Autofarm.Power) and tonumber(Autofarm.AuraGhosting) > 0 then
+                            task.wait(Autofarm.AuraGhosting)
+                        end
                     end
                 end
             end
         end
 
-        task.wait(TidalWave.WaitTime)
+        task.wait(Autofarm.AuraDelay)
     end
 end)
-
-
 
 task.spawn(function()
     while true do
@@ -441,6 +464,64 @@ task.spawn(function()
         end
 
         task.wait(TidalWave.WaitTime)
+    end
+end)
+
+task.spawn(function()
+    while true do
+        if not Running then
+            break
+        end
+
+        if LocalRoot and PinAbility.Enabled then
+            TriggerAbilityEvent:FireServer(nil, "Puppeteer Fish", LocalRoot.Position + Vector3.new(math.random(-1, 1), math.random(4, 6), math.random(-1, -1)), "Pinned Down", nil)
+        end
+
+        task.wait(Autofarm.AuraDelay)
+    end
+end)
+
+task.spawn(function()
+    while true do
+        if not Running then
+            break
+        end
+
+        if LocalRoot and HellfireAbility.Enabled then
+            TriggerAbilityEvent:FireServer(nil, "Zombie Fish",  LocalRoot.Position, "Infectious Hellfire", nil)
+        end
+
+        task.wait(Autofarm.AuraDelay)
+    end
+end)
+
+task.spawn(function()
+    while true do
+        if not Running then
+            break
+        end
+
+        if LocalRoot and SolarFlareAbility.Enabled then
+            TriggerAbilityEvent:FireServer(nil, "Sun Fish",  LocalRoot.Position, "Solar Flare", nil)
+        end
+
+        task.wait(Autofarm.AuraDelay)
+    end
+end)
+
+task.spawn(function()
+    while true do
+        if not Running then
+            break
+        end
+
+        if Bleed and LocalRoot then
+            for _ = 1, 2 do
+                TriggerAbilityEvent:FireServer(nil, "Rabbit Fish", LocalRoot.Position, "RabbitEnter")
+            end
+        end
+
+        task.wait()
     end
 end)
 
@@ -484,7 +565,7 @@ Fluent:CreateMinimizer({
 local Options = Fluent.Options
 MainTab:AddSection("Autofarm", "apple")
 MainTab:AddParagraph({
-    Content = "Make sure you have atleast ONE fish. | Fish Mode only works when in Medium-Range of the Reef."
+    Content = "Make sure you have atleast ONE fish. | Autofarm only works when in Medium-Range of the Reef."
 })
 MainTab:AddToggle("AutofarmToggle", {Title = "Enabled", Default = false}):OnChanged(function()
     Autofarm.Enabled = Options["AutofarmToggle"].Value
@@ -513,39 +594,6 @@ end)
 MainTab:AddSection("AuraFarm", "waves")
 MainTab:AddToggle("AuraFarmToggle", {Title = "AuraFarm", Default = false}):OnChanged(function()
     Autofarm.AuraFarm = Options["AuraFarmToggle"].Value
-    while Autofarm.AuraFarm do
-        if not Running then
-            break
-        end
-
-        if LocalRoot then
-            for Index = 1,360 do
-                if Index % 10 == 0 then
-                    for i = 1, Autofarm.Power do
-                        local FinalCFrame = CFrame.new(LocalRoot.Position) * CFrame.Angles(0, math.rad(Index), 0)
-                        PoseidonWaveEvent:FireServer(FinalCFrame)
-                        if not Autofarm.HideWaves then
-                            if CanRequire then
-                                VFXController.Play("Wave", nil, {
-                                    ["StartCFrame"] = FinalCFrame
-                                })
-                            else
-                                VFXTidalWave(FinalCFrame)
-                            end
-                        end
-                        if not Autofarm.AuraFarm then
-                            break
-                        end
-                        if i == (Autofarm.Power) and tonumber(Autofarm.AuraGhosting) > 0 then
-                            task.wait(Autofarm.AuraGhosting)
-                        end
-                    end
-                end
-            end
-        end
-
-        task.wait(Autofarm.AuraDelay)
-    end
 end)
 
 MainTab:AddSlider("AuraFarmGhostingTime", {
@@ -568,12 +616,12 @@ MainTab:AddSlider("AuraFarmDelay", {
 }):OnChanged(function(Value)
     Autofarm.AuraDelay = Value
 end)
-MainTab:AddToggle("HideWavesToggle", {Title = "Hide Waves", Default = false}):OnChanged(function()
-   TidalWave.HideWaves = Options["HideWavesToggle"].Value
+MainTab:AddToggle("AuraFarmHideWavesToggle", {Title = "Hide Waves", Default = false}):OnChanged(function()
+   Autofarm.HideWaves = Options["AuraFarmHideWavesToggle"].Value
 end)
 
 MainTab:AddSection("Ability Abuse", "apple")
-MainTab:AddToggle("InfiniteTidalWaveToggle", {Title = "Infinite Tidal Wave", Default = false}):OnChanged(function()
+MainTab:AddToggle("InfiniteTidalWaveToggle", {Title = "Tidal Wave Spawner", Default = false}):OnChanged(function()
     TidalWave.Enabled = Options["InfiniteTidalWaveToggle"].Value
 end)
 MainTab:AddSlider("TidalWaveWaitTime", {
@@ -586,10 +634,51 @@ MainTab:AddSlider("TidalWaveWaitTime", {
 }):OnChanged(function(Value)
     TidalWave.WaitTime = Value
 end)
-MainTab:AddToggle("AuraFarmHideWavesToggle", {Title = "Hide Waves", Default = false}):OnChanged(function()
-   Autofarm.HideWaves = Options["AuraFarmHideWavesToggle"].Value
+MainTab:AddToggle("AbilityAbuseHideWavesToggle", {Title = "Hide Waves", Default = false}):OnChanged(function()
+   TidalWave.HideWaves = Options["AbilityAbuseHideWavesToggle"].Value
 end)
 
+MainTab:AddToggle("InfinitePinAbility", {Title = "Pin Ability Spawner", Default = false}):OnChanged(function()
+   PinAbility.Enabled = Options["InfinitePinAbility"].Value
+end)
+MainTab:AddSlider("PinAbilityWaitTime", {
+    Title = "Wait Time",
+    Description = "Time in seconds that it waits until it spawns a Pin Ability",
+    Default = PinAbility.WaitTime,
+    Min = 0.1,
+    Max = 10,
+    Rounding = 1,
+}):OnChanged(function(Value)
+    PinAbility.WaitTime = Value
+end)
+
+MainTab:AddToggle("InfiniteHellfireAbility", {Title = "Hellfire Ability Spawner", Default = false}):OnChanged(function()
+   HellfireAbility.Enabled = Options["InfiniteHellfireAbility"].Value
+end)
+MainTab:AddSlider("HellfireAbilityWaitTime", {
+    Title = "Wait Time",
+    Description = "Time in seconds that it waits until it spawns a Hellfire Ability",
+    Default = HellfireAbility.WaitTime,
+    Min = 0.1,
+    Max = 10,
+    Rounding = 1,
+}):OnChanged(function(Value)
+    HellfireAbility.WaitTime = Value
+end)
+
+MainTab:AddToggle("InfiniteSolarFlareAbility", {Title = "Solar Flare Ability Spawner", Default = false}):OnChanged(function()
+   SolarFlareAbility.Enabled = Options["InfiniteSolarFlareAbility"].Value
+end)
+MainTab:AddSlider("SolarFlareAbilityWaitTime", {
+    Title = "Wait Time",
+    Description = "Time in seconds that it waits until it spawns a Solar Flare Ability",
+    Default = SolarFlareAbility.WaitTime,
+    Min = 0.1,
+    Max = 10,
+    Rounding = 1,
+}):OnChanged(function(Value)
+    SolarFlareAbility.WaitTime = Value
+end)
 
 MiscTab:AddToggle("CFrameSpeed", {Title = "CFrame Speed", Default = false}):OnChanged(function()
     local Value = Options["CFrameSpeed"].Value
@@ -646,24 +735,6 @@ MiscTab:AddToggle("RemoveAllWaves", {Title = "Remove All Waves", Default = false
 end)
 MiscTab:AddToggle("EarBleed", {Title = "Ear Bleed", Default = false}):OnChanged(function()
     Bleed = Options["EarBleed"].Value
-    while Bleed do
-        if not Running then
-            break
-        end
-
-        if LocalRoot then
-            for _ = 1, 2 do
-                TriggerAbilityEvent:FireServer(
-                    nil,
-                    "Rabbit Fish",
-                    LocalRoot.Position,
-                    "RabbitEnter"
-                )
-            end
-        end
-
-        task.wait()
-    end
 end)
 
 MiscTab:AddButton({
@@ -683,12 +754,7 @@ MiscTab:AddButton({
 
         task.spawn(function()
             for Index = 1, 5000000 do
-                TriggerAbilityEvent:FireServer(
-                    nil,
-                    "Rabbit Fish",
-                    LocalRoot.Position,
-                    "RabbitEnter"
-                )
+                TriggerAbilityEvent:FireServer(nil, "Rabbit Fish", LocalRoot.Position, "RabbitEnter")
 
                 if Index % 250 == 0 then
                     task.wait(0.001)
