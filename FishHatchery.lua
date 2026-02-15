@@ -232,7 +232,7 @@ end)
 
 local Reefs = table.create(5)
 
-for _,ReefName in ipairs({"Freshwater", "Coral", "Sun", "Trash", "Runic"}) do
+for _,ReefName in ipairs({"Freshwater", "Coral", "Sun", "Trash", "Runic", "Obsidian"}) do
     Reefs[ReefName] = {
         OriginalName = ReefName .. " Reef",
         SelfInstance = nil,
@@ -492,7 +492,7 @@ end)
 
 MainTab:AddDropdown("AutofarmReefDropdown", {
     Title = "Target Reef",
-    Values = {"Freshwater Reef", "Coral Reef", "Sun Reef", "Trash Reef", "Runic Reef"},
+    Values = {"Freshwater Reef", "Coral Reef", "Sun Reef", "Trash Reef", "Runic Reef", "Obsidian Reef"},
     Multi = false,
     Search = true,
     Default = 1,
