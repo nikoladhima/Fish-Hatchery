@@ -3,20 +3,8 @@
 
 ## ⚙️ Features:
 - **Autofarm**
-  - Fully Customizable
-  - **AuraFarm**
-    - Based on Autofarm Power
-    - Customizable Ghosting & Delay Time
-    - Option to Hide Waves
 - **Ability Abuse**
-  - Infinite Tidal Wave Spawner
-  - Customizable Wait Time
-  - Option to Hide Waves
 - **Misc**
-  - CFrame Speed
-  - Remove All Waves
-  - Ear Bleed
-  - Lag Server
 
 ## 🔌Shortened Script
 ```lua
