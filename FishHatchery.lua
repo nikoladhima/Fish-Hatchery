@@ -518,12 +518,11 @@ MainTab:AddToggle("AuraFarmToggle", {Title = "AuraFarm", Default = false}):OnCha
             break
         end
 
-        local Position = LocalRoot and LocalRoot.Position
-        if Position then
+        if LocalRoot then
             for Index = 1,360 do
                 if Index % 10 == 0 then
                     for i = 1, Autofarm.Power do
-                        local FinalCFrame = CFrame.new(Position) * CFrame.Angles(0, math.rad(Index), 0)
+                        local FinalCFrame = CFrame.new(LocalRoot.Position) * CFrame.Angles(0, math.rad(Index), 0)
                         PoseidonWaveEvent:FireServer(FinalCFrame)
                         if not Autofarm.HideWaves then
                             if CanRequire then
@@ -537,7 +536,7 @@ MainTab:AddToggle("AuraFarmToggle", {Title = "AuraFarm", Default = false}):OnCha
                         if not Autofarm.AuraFarm then
                             break
                         end
-                        if i == (Autofarm.Power)  and tonumber(Autofarm.AuraGhosting) > 0 then
+                        if i == (Autofarm.Power) and tonumber(Autofarm.AuraGhosting) > 0 then
                             task.wait(Autofarm.AuraGhosting)
                         end
                     end
