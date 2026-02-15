@@ -111,12 +111,12 @@ local PoseidonWaveEvent = Remotes:WaitForChild("PoseidonWaveEvent")
 local Autofarm = {
     Enabled = false,
     TargetFishSlot = "1",
-    Fish = true,
-    TidalWave = true,
+    --[[Fish = true,
+    TidalWave = true,]]
     TargetReef = "Freshwater",
     Power = 5,
-    TidalWaveWaitTime = 0.5,
-    HideWaves = false
+    --[[TidalWaveWaitTime = 0.5,
+    HideWaves = false]]
 }
 
 local TidalWave = {
@@ -340,7 +340,7 @@ task.spawn(function()
             break
         end
 
-        if Autofarm.Enabled and Autofarm.Fish then
+        if Autofarm.Enabled then
             local TargetFishSlot = Autofarm.TargetFishSlot
             local Power = Autofarm.Power
             for Index, Collectible in next, Reefs[Autofarm.TargetReef].Collectibles do
@@ -405,7 +405,7 @@ task.spawn(function()
 	end
 end)
 
-task.spawn(function()
+--[[task.spawn(function()
     while true do
         if not Running then
             break
@@ -428,7 +428,7 @@ task.spawn(function()
 
         task.wait(Autofarm.TidalWaveWaitTime)
     end
-end)
+end)]]
 
 task.spawn(function()
     while true do
@@ -496,12 +496,12 @@ local Options = Fluent.Options
 
 MainTab:AddSection("Autofarm", "apple")
 MainTab:AddParagraph({
-    Content = "Make sure you have atleast ONE fish. | Fish Mode only works when in Medium-Range of the Reef. | Tidal Waves may not do anything unless you are standing inside of the Reef."
+    Content = "Make sure you have atleast ONE fish. | Fish Mode only works when in Medium-Range of the Reef."
 })
 MainTab:AddToggle("AutofarmToggle", {Title = "Enabled", Default = false}):OnChanged(function()
     Autofarm.Enabled = Options["AutofarmToggle"].Value
 end)
-MainTab:AddDropdown("AutofarmModes", {
+--[[MainTab:AddDropdown("AutofarmModes", {
     Title = "Modes",
     Values = {"Fish", "Tidal Wave [BUGGY]"},
     Multi = true,
@@ -510,7 +510,7 @@ MainTab:AddDropdown("AutofarmModes", {
 }):OnChanged(function(Values)
     Autofarm.Fish = Values["Fish"]
     Autofarm.TidalWave = Values["Tidal Wave [BUGGY]"]
-end)
+end)]]
 MainTab:AddDropdown("AutofarmReefDropdown", {
     Title = "Target Reef",
     Values = {"Freshwater Reef", "Coral Reef", "Sun Reef", "Trash Reef", "Runic Reef"},
@@ -643,7 +643,7 @@ MainTab:AddSlider("AutofarmPower", {
 }):OnChanged(function(Value)
     Autofarm.Power = Value
 end)
-MainTab:AddSlider("AutofarmTidalWaveWaitTime", {
+--[[MainTab:AddSlider("AutofarmTidalWaveWaitTime", {
     Title = "Tidal Wave Wait Time",
     Description = "Time in seconds that it waits until it spawns a Tidal Wave",
     Default = Autofarm.TidalWaveWaitTime,
@@ -655,12 +655,9 @@ MainTab:AddSlider("AutofarmTidalWaveWaitTime", {
 end)
 MainTab:AddToggle("AutofarmHideWaves", {Title = "Hide Waves", Default = false}):OnChanged(function()
     Autofarm.HideWaves = Options["AutofarmHideWaves"].Value
-end)
+end)]]
 
 MainTab:AddSection("Ability Abuse", "apple")
-MainTab:AddParagraph({
-    Content = "Tidal Waves may not do anything unless you are standing inside of the Reef."
-})
 MainTab:AddToggle("InfiniteTidalWaveToggle", {Title = "Infinite Tidal Wave", Default = false}):OnChanged(function()
     TidalWave.Enabled = Options["InfiniteTidalWaveToggle"].Value
 end)
