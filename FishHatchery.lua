@@ -1,1 +1,1 @@
--- The game closed temporarily so I'll bring the script back when the game opens again.
+-- The game is under maintenance so I'll bring the script back when the game opens again.
